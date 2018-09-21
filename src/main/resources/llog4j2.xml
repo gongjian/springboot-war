@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <!-- tomcat下备份一个日志 -->
+        <RollingFile name="printLog" fileName="${sys:catalina.home}/logs/xxx.log"
+                     filePattern="${sys:catalina.home}/logs/xxx_%d{yyyy-MM-dd}.log">
+            <!--输出格式-->
+            <PatternLayout pattern="%d %-5p %m%n"/>
+            <Policies>
+                <!--每1天更新一次，单位由filePattern中的格式决定，dd天，HH小时，mm分钟-->
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <!--此处为每个文件大小策略限制，使用它一般会在文件中filePattern采用%i模式-->
+                <!--<SizeBasedTriggeringPolicy size="128KB" />-->
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <!--<AppenderRef ref="Console"/>-->
+            <AppenderRef ref="printLog"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
